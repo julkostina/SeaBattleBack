@@ -17,7 +17,9 @@ public abstract class Ship {
     public int getSize() {
         return size;
     };
-
+    public List<Coordinate> getCoordinates() {
+        return coordinates;
+    }
     abstract public void setSize();
 
     public int getHitPoints() {

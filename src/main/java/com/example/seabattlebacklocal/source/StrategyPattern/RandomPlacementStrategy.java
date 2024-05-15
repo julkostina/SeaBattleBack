@@ -1,5 +1,7 @@
 package com.example.seabattlebacklocal.source.StrategyPattern;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.example.seabattlebacklocal.source.Coordinate;
@@ -17,8 +19,11 @@ public class RandomPlacementStrategy implements PlacementStrategy {
 
     @Override
     public void placeShips(GameBoard gameBoard, Player player) {
+
         for (SHIPTYPE type : SHIPTYPE.values()) {
             Ship ship;
+            List<Coordinate> coordinates = new ArrayList<Coordinate>();
+            coordinates.add(new Coordinate(0, 0));
             ShipFactory factory;
                 switch (type) {
                     case ONE_DECK:
@@ -37,14 +42,13 @@ public class RandomPlacementStrategy implements PlacementStrategy {
                         throw new IllegalArgumentException("Invalid ship type");
                 
             }
-            ship = factory.createShip();
+            ship = factory.createShip(coordinates);
             boolean placed = false;
             while (!placed) {
                 int startRow = random.nextInt(gameBoard.getSize());
                 int startColumn = random.nextInt(gameBoard.getSize());
                 int endRow = startRow;
                 int endColumn = startColumn;
-
                 // If the ship is vertical, adjust the end row
                 if (random.nextBoolean()) {
                     if (startRow + ship.getSize() - 1 < gameBoard.getSize()) {

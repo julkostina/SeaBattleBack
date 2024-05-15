@@ -7,26 +7,25 @@ import com.example.seabattlebacklocal.source.Ships.Ship;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-
-
 public class GameBoard {
     private static final int EMPTY = 0;
     private static final int SHIP = 1;
     private static final int HIT = 2;
     private static final int MISS = 3;
-    
+
     private int size;
     private final int[][] board;
 
     private List<Ship> ships;
-    private Serialization serialization;
-    private Dictionary<String, String> data ;
+    private Serialization serialization = new Serialization();
+    private Dictionary<String, String> data;
+
     enum Placement {
         VERTICAL_UP, VERTICAL_DOWN, HORIZONTAL_RIGHT, HORIZONTAL_LEFT
     }
 
-    public GameBoard(int size,Player player) {
-        this.size=size;
+    public GameBoard(int size, Player player) {
+        this.size = size;
         data = serialization.readFile();
         this.board = new int[size][size];
         for (int i = 0; i < size; i++) {
@@ -88,59 +87,58 @@ public class GameBoard {
         return false;
     }
 
-    public boolean placeShip(Ship ship, Coordinate start, Coordinate end){
-        boolean result=false;
-        if(isShip(start.getRow(),start.getColumn())||isShip(end.getRow(),end.getColumn())){
+    public boolean placeShip(Ship ship, Coordinate start, Coordinate end) {
+        boolean result = false;
+        if (isShip(start.getRow(), start.getColumn()) || isShip(end.getRow(), end.getColumn())) {
             return result;
         }
-        Placement placement=null;
+        Placement placement = null;
         ships.add(ship);
-        if(ship.getSize()==1){
+        if (ship.getSize() == 1) {
             updateNumberOfShips("oneDeck");
             updateCoordinatesOfShips(ship);
-            for(int i=start.getColumn(); i<=end.getColumn(); i++){
-                board[start.getRow()][i]=SHIP;
-                board[i][start.getColumn()]=SHIP;
+            for (int i = start.getColumn(); i <= end.getColumn(); i++) {
+                board[start.getRow()][i] = SHIP;
+                board[i][start.getColumn()] = SHIP;
             }
-        }
-        else{
-            result=true;
-            if((start.getRow()-end.getRow())>0){
-                placement=Placement.VERTICAL_DOWN;
+        } else {
+            result = true;
+            if ((start.getRow() - end.getRow()) > 0) {
+                placement = Placement.VERTICAL_DOWN;
             }
-            if((start.getRow()-end.getRow())<0){
-                placement=Placement.VERTICAL_UP;
+            if ((start.getRow() - end.getRow()) < 0) {
+                placement = Placement.VERTICAL_UP;
             }
-            if((start.getColumn()-end.getColumn())>0){
-                placement=Placement.HORIZONTAL_LEFT;
+            if ((start.getColumn() - end.getColumn()) > 0) {
+                placement = Placement.HORIZONTAL_LEFT;
             }
-            if((start.getColumn()-end.getColumn())<0){
-                placement=Placement.HORIZONTAL_RIGHT;
+            if ((start.getColumn() - end.getColumn()) < 0) {
+                placement = Placement.HORIZONTAL_RIGHT;
             }
-            switch (placement){
+            switch (placement) {
                 case VERTICAL_UP:
-                    for(int i=start.getRow(); i<=end.getRow(); i++){
-                        board[i][start.getColumn()]=SHIP;
+                    for (int i = start.getRow(); i <= end.getRow(); i++) {
+                        board[i][start.getColumn()] = SHIP;
                     }
                     break;
                 case VERTICAL_DOWN:
-                    for(int i=start.getRow(); i>=end.getRow(); i--){
-                        board[i][start.getColumn()]=SHIP;
+                    for (int i = start.getRow(); i >= end.getRow(); i--) {
+                        board[i][start.getColumn()] = SHIP;
                     }
                     break;
                 case HORIZONTAL_RIGHT:
-                    for(int i=start.getColumn(); i<=end.getColumn(); i++){
-                        board[start.getRow()][i]=SHIP;
+                    for (int i = start.getColumn(); i <= end.getColumn(); i++) {
+                        board[start.getRow()][i] = SHIP;
                     }
                     break;
                 default:
-                    for(int i=start.getColumn(); i>=end.getColumn(); i--){
-                        board[start.getRow()][i]=SHIP;
+                    for (int i = start.getColumn(); i >= end.getColumn(); i--) {
+                        board[start.getRow()][i] = SHIP;
                     }
                     break;
-                    
+
             }
-            switch(ship.getSize()){
+            switch (ship.getSize()) {
                 case 2:
                     updateNumberOfShips("twoDeck");
                     updateCoordinatesOfShips(ship);
@@ -153,11 +151,10 @@ public class GameBoard {
                     updateNumberOfShips("fourDeck");
                     updateCoordinatesOfShips(ship);
                     break;
-            }   
+            }
         }
         return result;
     }
-   
 
     public void makeMove(Coordinate target) {
         if (isShip(target.getRow(), target.getColumn())) {
@@ -183,23 +180,36 @@ public class GameBoard {
         return true;
     }
 
-    private void updateNumberOfShips(String shipType){
-        String stringOfShips  = data.get("ships"+ data.get("turn"));
-        Gson gson = new Gson();
-        java.lang.reflect.Type type = new TypeToken<Dictionary<String, Integer>>(){}.getType();
-        Dictionary<String, Integer> dictionary = gson.fromJson(stringOfShips, type);
-        dictionary.put(shipType, dictionary.get(shipType)-1);
-        stringOfShips = gson.toJson(dictionary);
-        data.put("ships"+ data.get("turn"), stringOfShips);
+    private void updateNumberOfShips(String shipType) {
+        try {
+            String stringOfShips = data.get("ships" + data.get("turn"));
+            Gson gson = new Gson();
+            java.lang.reflect.Type type = new TypeToken<Dictionary<String, Integer>>() {
+            }.getType();
+            Dictionary<String, Integer> dictionary = gson.fromJson(stringOfShips, type);
+            dictionary.put(shipType, dictionary.get(shipType) - 1);
+            stringOfShips = gson.toJson(dictionary);
+            data.put("ships" + data.get("turn"), stringOfShips);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
-    private void updateCoordinatesOfShips(Ship ship) {
-        String stringOfShips  = data.get("ships"+ data.get("turn"));
-        Gson gson = new Gson();
-        java.lang.reflect.Type type = new TypeToken<Dictionary<String, Integer[]>>(){}.getType();
-        Dictionary<String, Integer[]> dictionary = gson.fromJson(stringOfShips, type);
-        dictionary.put(String.valueOf(ship.getClass().getName()), dictionary.get(ship.getClass().getName())-1);
-        stringOfShips = gson.toJson(dictionary);
-        data.put("ships"+ data.get("turn"), stringOfShips);
-    }
-} 
 
+    private void updateCoordinatesOfShips(Ship ship) {
+        try {
+            String stringOfShips = data.get("ships" + data.get("turn"));
+            Gson gson = new Gson();
+            java.lang.reflect.Type type = new TypeToken<Dictionary<String, Integer[]>>()
+            {
+            }.getType();
+            Dictionary<String, Integer[]> dictionary = gson.fromJson(stringOfShips,
+            type);
+            dictionary.put(String.valueOf(ship.getClass().getName(),),
+            dictionary.get(ship.getClass().getName()));
+            stringOfShips = gson.toJson(dictionary);
+            data.put("ships" + data.get("turn"), stringOfShips);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+}

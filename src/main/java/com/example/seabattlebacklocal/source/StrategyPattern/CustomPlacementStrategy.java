@@ -15,11 +15,14 @@ public class CustomPlacementStrategy implements PlacementStrategy {
     public void placeShips(GameBoard gameBoard, Player player) {
         Serialization serialization = new Serialization();
         Dictionary<String, String> data = null;
-        try{data  = serialization.readFile();}
-        catch(Exception e){ System.out.println("Error reading file");}
+        try {
+            data = serialization.readFile();
+        } catch (Exception e) {
+            throw new RuntimeException("Error reading file");
+        }
         int playerNumber = Integer.parseInt(data.get("turn"));
         int startRow = Integer.parseInt(data.get(""));
-        int startColumn ;
+        int startColumn;
         int endRow;
         int endColumn;
         Ship ship;
@@ -28,11 +31,13 @@ public class CustomPlacementStrategy implements PlacementStrategy {
         ship = factory.createShip();
 
         // Place the ship
-//        boolean placed = gameBoard.placeShip(ship, new Coordinate(startRow, startColumn), new Coordinate(endRow, endColumn));
+        // boolean placed = gameBoard.placeShip(ship, new Coordinate(startRow,
+        // startColumn), new Coordinate(endRow, endColumn));
 
-        // If the ship couldn't be placed, you could prompt the player to enter new coordinates, or handle it however you want
-//        if (!placed) {
-//            // Handle failed placement
-//        }
+        // If the ship couldn't be placed, you could prompt the player to enter new
+        // coordinates, or handle it however you want
+        // if (!placed) {
+        // // Handle failed placement
+        // }
     }
 }
