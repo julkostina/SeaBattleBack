@@ -2,7 +2,7 @@ package com.example.seabattlebacklocal.source;
 
 import java.util.Dictionary;
 
-public class ObserverImpl implements Observer{
+public class PlayerTurn implements Observer{
     private Serialization serialization = new Serialization();
     private Dictionary<String, String> data = serialization.readFile();
 

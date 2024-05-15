@@ -24,7 +24,8 @@
     "threeDeck": [[],[]],
     "fourDeck": []
   },
-  "placed": false,
+  "placed1": false,
+  "placed2": false,
   "ships2": {
     "oneDeck": 4,
     "twoDeck": 3,
