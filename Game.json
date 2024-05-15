@@ -1,0 +1,37 @@
+{
+  "player1": "",
+  "player2": "",
+  "turn": 1,
+  "volume": 50,
+  "sizeOfBoard": 8,
+  "ships1": {
+    "oneDeck": 4,
+    "twoDeck": 3,
+    "threeDeck": 2,
+    "fourDeck": 1
+  },
+  "placementStrategy":"",
+  "placedShips1": {
+    "oneDeck": [[], [], [], []],
+    "twoDeck": [[], [], []],
+    "threeDeck": [[],[]],
+    "fourDeck": []
+  },
+  "placedShips2": {
+    "oneDeck": [[], [], [], []],
+    "twoDeck": [[], [], []],
+    "threeDeck": [[],[]],
+    "fourDeck": []
+  },
+  "placed": false,
+  "ships2": {
+    "oneDeck": 4,
+    "twoDeck": 3,
+    "threeDeck": 2,
+    "fourDeck": 1
+  },
+  "hit1": 0,
+  "hit2": 0,
+  "miss1": 0,
+  "miss2": 0
+}
