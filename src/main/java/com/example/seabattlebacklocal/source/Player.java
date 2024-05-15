@@ -1,61 +1,60 @@
 package com.example.seabattlebacklocal.source;
 
-import java.io.IOException;
 import java.util.Dictionary;
 
 import com.example.seabattlebacklocal.source.StrategyPattern.PlacementStrategy;
 
 public class Player {
-    private Dictionary<Character, Character> data=null;
+    private Dictionary<String, String> data = null;
     private String name;
     private GameBoard gameBoard;
-    private int miss=0;
-    private int hit=0;
+    private int miss = 0;
+    private int hit = 0;
     private PlacementStrategy placementStrategy;
     private Serialization serialization;
 
-    public Player(String name, GameBoard gameBoard){
-        this.name=name;
-        this.gameBoard=gameBoard;
-        try {
-            data = serialization.readFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public Player(String name, GameBoard gameBoard) {
+        this.SetName(name);
+        this.gameBoard = gameBoard;
+        data = serialization.readFile();
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
-    public void SetName(String value){
-        this.name=value;
-        // try{
-        //     serialization.writeFile(data);
-        // }catch (IOException e) {
-        //     e.printStackTrace();
-        // }
+
+    public void SetName(String value) {
+        this.name = value;
+        data.put("player" + data.get("turn"), this.name);
+        updateBoard();
     }
-    public int getMiss(){
+
+    public int getMiss() {
         return miss;
     }
 
-    public int getHit(){
+    public int getHit() {
         return hit;
     }
 
-
-    public void makeMove( Coordinate target){
-        if(gameBoard.getBoard()[target.getRow()][target.getColumn()]==0){
-            gameBoard.getBoard()[target.getRow()][target.getColumn()]=3;
+    public void makeMove(Coordinate target) {
+        if (gameBoard.getBoard()[target.getRow()][target.getColumn()] == 0) {
+            gameBoard.getBoard()[target.getRow()][target.getColumn()] = 3;
             miss++;
-        }
-        else if(gameBoard.getBoard()[target.getRow()][target.getColumn()]==1){
-            gameBoard.getBoard()[target.getRow()][target.getColumn()]=2;
+            data.put("miss" + data.get("turn"), String.valueOf(this.miss));
+        } else if (gameBoard.getBoard()[target.getRow()][target.getColumn()] == 1) {
+            gameBoard.getBoard()[target.getRow()][target.getColumn()] = 2;
             hit++;
+            data.put("hit" + data.get("turn"), String.valueOf(this.hit));
         }
+        updateBoard();
     }
-    public void placeShips(){
+
+    private void updateBoard(){
+        serialization.writeFile(data);
+    }
+    
+    public void placeShips() {
         placementStrategy.placeShips(gameBoard, this);
     }
-
 }

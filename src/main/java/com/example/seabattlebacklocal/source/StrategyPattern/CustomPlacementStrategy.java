@@ -14,11 +14,11 @@ public class CustomPlacementStrategy implements PlacementStrategy {
     @Override
     public void placeShips(GameBoard gameBoard, Player player) {
         Serialization serialization = new Serialization();
-        Dictionary<Character, Character> data = null;
+        Dictionary<String, String> data = null;
         try{data  = serialization.readFile();}
         catch(Exception e){ System.out.println("Error reading file");}
-        int playerNumber = data.get("turn");
-        int startRow = data.get("");
+        int playerNumber = Integer.parseInt(data.get("turn"));
+        int startRow = Integer.parseInt(data.get(""));
         int startColumn ;
         int endRow;
         int endColumn;

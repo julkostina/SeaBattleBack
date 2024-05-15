@@ -10,7 +10,8 @@
     "threeDeck": 2,
     "fourDeck": 1
   },
-  "placementStrategy":"",
+  "placementStrategy1":"",
+  "placementStrategy2":"",
   "placedShips1": {
     "oneDeck": [[], [], [], []],
     "twoDeck": [[], [], []],

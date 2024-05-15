@@ -21,7 +21,7 @@ public class Serialization {
     }
 
 
-public void writeFile(Dictionary<Character, Character> data) {
+public void writeFile(Dictionary<String, String> data) {
     Gson gson = new Gson();
     try (FileWriter writer = new FileWriter(fileName)) {
         gson.toJson(data, writer);
@@ -30,7 +30,7 @@ public void writeFile(Dictionary<Character, Character> data) {
     }
 }
 
-    public Dictionary<Character, Character> readFile() {
+    public Dictionary<String, String> readFile() {
         String content="";
         try{
            content = new String(Files.readAllBytes(Paths.get(fileName)));
@@ -45,12 +45,10 @@ public void writeFile(Dictionary<Character, Character> data) {
             sb.append(matcher.group()).append(" ");
         }
         String[] words = sb.toString().trim().split("\\s+");
-        Dictionary<Character, Character> dictionary = new Hashtable<>();
-        for(String word : words){
-            for(int i=0; i< word.length()-1;i++){
-                dictionary.put(word.charAt(i), word.charAt(i+1));
+        Dictionary<String, String> dictionary = new Hashtable<>();
+            for(int i=0; i< words.length;i+=2){
+                dictionary.put(words[i], words[i+1]);
             }
-        }
         return dictionary;
     }
 }
