@@ -1,6 +1,7 @@
 package com.example.seabattlebacklocal.source;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.gson.Gson;
 
 import java.nio.file.Files;
 import java.io.*;
@@ -19,38 +20,24 @@ public class Serialization {
         this.objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
 
-public void writeFile(Object data, String searchString) throws IOException {
-    // Convert the data to a JSON string
-    String json = objectMapper.writeValueAsString(data);
 
-    // Append the JSON string to the file
-    try (FileWriter writer = new FileWriter(fileName, true)) {
-        writer.write(json);
-    }
-
-    // Read the file line by line and check if each line contains the searchString
-    try (BufferedReader reader = Files.newBufferedReader(Paths.get(fileName))) {
-        String line;
-        while ((line = reader.readLine()) != null) {
-            if (line.contains(searchString)) {
-                System.out.println("Found the string: " + searchString);
-                break;
-            }
-        }
+public void writeFile(Dictionary<Character, Character> data) {
+    Gson gson = new Gson();
+    try (FileWriter writer = new FileWriter(fileName)) {
+        gson.toJson(data, writer);
+    } catch (IOException e) {
+        throw  new RuntimeException(e);
     }
 }
 
-    public void writeFile(Dictionary<Character, Character> data) throws IOException {
-        // Convert the data to a JSON string
-        String json = objectMapper.writeValueAsString(data);
-
-        // Append the JSON string to the file
-        try (FileWriter writer = new FileWriter(fileName, true)) {
-            writer.write(json);
+    public Dictionary<Character, Character> readFile() {
+        String content="";
+        try{
+           content = new String(Files.readAllBytes(Paths.get(fileName)));
         }
-}
-    public Dictionary<Character,Character> readFile() throws IOException {
-        String content = new String(Files.readAllBytes(Paths.get(fileName)));
+        catch(IOException e){
+            throw new RuntimeException(e);
+        }
         Pattern pattern = Pattern.compile("\\b\\w+\\b");
         Matcher matcher = pattern.matcher(content);
         StringBuilder sb = new StringBuilder();
