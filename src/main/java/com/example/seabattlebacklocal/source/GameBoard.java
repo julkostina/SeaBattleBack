@@ -1,5 +1,6 @@
 package com.example.seabattlebacklocal.source;
 
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class GameBoard {
         VERTICAL_UP, VERTICAL_DOWN, HORIZONTAL_RIGHT, HORIZONTAL_LEFT
     }
 
-    public GameBoard(int size, Player player) {
+    public GameBoard(int size) {
         this.size = size;
         data = serialization.readFile();
         this.board = new int[size][size];
@@ -33,6 +34,7 @@ public class GameBoard {
                 board[i][j] = EMPTY;
         }
         data.put("size", String.valueOf(size));
+        serialization.writeFile(data);
     }
 
     public int[][] getBoard() {
@@ -59,6 +61,9 @@ public class GameBoard {
         return size;
     }
 
+    public List<Ship> getShips() {
+        return ships;
+    }
     public boolean isShip(int x, int y) {
         return board[x][y] == SHIP;
     }
@@ -95,8 +100,8 @@ public class GameBoard {
         Placement placement = null;
         ships.add(ship);
         if (ship.getSize() == 1) {
-            updateNumberOfShips("oneDeck");
-            updateCoordinatesOfShips(ship);
+            updateNumberOfShips("oneDeck", '-');
+            updateCoordinatesOfShips("oneDeck", ship);
             for (int i = start.getColumn(); i <= end.getColumn(); i++) {
                 board[start.getRow()][i] = SHIP;
                 board[i][start.getColumn()] = SHIP;
@@ -140,16 +145,16 @@ public class GameBoard {
             }
             switch (ship.getSize()) {
                 case 2:
-                    updateNumberOfShips("twoDeck");
-                    updateCoordinatesOfShips(ship);
+                    updateNumberOfShips("twoDeck",'-');
+                    updateCoordinatesOfShips("twoDeck",ship);
                     break;
                 case 3:
-                    updateNumberOfShips("threeDeck");
-                    updateCoordinatesOfShips(ship);
+                    updateNumberOfShips("threeDeck",'-');
+                    updateCoordinatesOfShips("threeDeck",ship);
                     break;
                 case 4:
-                    updateNumberOfShips("fourDeck");
-                    updateCoordinatesOfShips(ship);
+                    updateNumberOfShips("fourDeck",'-');
+                    updateCoordinatesOfShips("fourDeck",ship);
                     break;
             }
         }
@@ -180,14 +185,18 @@ public class GameBoard {
         return true;
     }
 
-    private void updateNumberOfShips(String shipType) {
+    private void updateNumberOfShips(String shipType, char typeOfOperation) {
         try {
             String stringOfShips = data.get("ships" + data.get("turn"));
             Gson gson = new Gson();
             java.lang.reflect.Type type = new TypeToken<Dictionary<String, Integer>>() {
             }.getType();
             Dictionary<String, Integer> dictionary = gson.fromJson(stringOfShips, type);
-            dictionary.put(shipType, dictionary.get(shipType) - 1);
+            if(typeOfOperation == '+'){
+                dictionary.put(shipType, dictionary.get(shipType) + 1);
+            } else {
+                dictionary.put(shipType, dictionary.get(shipType) - 1);
+            }
             stringOfShips = gson.toJson(dictionary);
             data.put("ships" + data.get("turn"), stringOfShips);
         } catch (Exception e) {
@@ -195,21 +204,29 @@ public class GameBoard {
         }
     }
 
-    private void updateCoordinatesOfShips(Ship ship) {
-        try {
-            String stringOfShips = data.get("ships" + data.get("turn"));
-            Gson gson = new Gson();
-            java.lang.reflect.Type type = new TypeToken<Dictionary<String, Integer[]>>()
-            {
-            }.getType();
-            Dictionary<String, Integer[]> dictionary = gson.fromJson(stringOfShips,
-            type);
-            dictionary.put(String.valueOf(ship.getClass().getName(),),
-            dictionary.get(ship.getClass().getName()));
-            stringOfShips = gson.toJson(dictionary);
-            data.put("ships" + data.get("turn"), stringOfShips);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    private void updateCoordinatesOfShips(String shipType, Ship ship) {
+    try {
+        String stringOfShips = data.get("ships" + data.get("turn"));
+        Gson gson = new Gson();
+        java.lang.reflect.Type type = new TypeToken<Dictionary<String, List<Integer[]>>>(){}.getType();
+        Dictionary<String, List<Integer[]>> dictionary = gson.fromJson(stringOfShips, type);
+
+        // Get the coordinates of the ship
+        List<Coordinate> shipCoordinates = ship.getCoordinates();
+
+        // Convert the coordinates to a list of arrays of integers
+        List<Integer[]> coordinates = new ArrayList<>();
+        for (Coordinate coordinate : shipCoordinates) {
+            coordinates.add(new Integer[] {coordinate.getRow(), coordinate.getColumn()});
         }
+
+        // Update the dictionary with the new coordinates
+        dictionary.put(shipType, coordinates);
+
+        stringOfShips = gson.toJson(dictionary);
+        data.put("ships" + data.get("turn"), stringOfShips);
+    } catch (Exception e) {
+        throw new RuntimeException(e);
     }
+}
 }

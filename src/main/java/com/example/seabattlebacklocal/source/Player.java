@@ -2,7 +2,8 @@ package com.example.seabattlebacklocal.source;
 
 import java.util.Dictionary;
 
-import com.example.seabattlebacklocal.source.StrategyPattern.PlacementStrategy;
+import com.example.seabattlebacklocal.source.StrategyPattern.RandomPlacementStrategy;
+
 
 public class Player {
     enum Placement {
@@ -15,15 +16,16 @@ public class Player {
     private GameBoard gameBoard;
     private int miss = 0;
     private int hit = 0;
-    private PlacementStrategy placementStrategy;
     private Serialization serialization;
 
     public Player(String name, GameBoard gameBoard) {
+        data = serialization.readFile();
         this.SetName(name);
         this.gameBoard = gameBoard;
-        data = serialization.readFile();
     }
-
+    public GameBoard getGameBoard() {
+        return gameBoard;
+    }
     public String getName() {
         return name;
     }
@@ -63,12 +65,12 @@ public class Player {
     public void placeShips(Placement placement) {
         if (placement == Placement.RANDOM) {
             data.put(data.get("placementStrategy"+data.get("turn")), "RANDOM");
-            placementStrategy.placeShips(gameBoard, this);
+            RandomPlacementStrategy placementStrategy  = new RandomPlacementStrategy();
+            placementStrategy.placeShips(this);
             data.put(data.get("placed"+data.get("turn")), "true");
         }
         else{
             data.put(data.get("placementStrategy"+data.get("turn")), "CUSTOM");
-            placementStrategy.placeShips(gameBoard, this);
             data.put(data.get("placed"+data.get("turn")), "true");
         }
         this.updateBoard();

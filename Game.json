@@ -13,15 +13,15 @@
   "placementStrategy1":"",
   "placementStrategy2":"",
   "placedShips1": {
-    "oneDeck": [[], [], [], []],
-    "twoDeck": [[], [], []],
-    "threeDeck": [[],[]],
+    "oneDeck": [],
+    "twoDeck": [],
+    "threeDeck": [],
     "fourDeck": []
   },
   "placedShips2": {
-    "oneDeck": [[], [], [], []],
-    "twoDeck": [[], [], []],
-    "threeDeck": [[],[]],
+    "oneDeck": [],
+    "twoDeck": [],
+    "threeDeck": [],
     "fourDeck": []
   },
   "placed1": false,
