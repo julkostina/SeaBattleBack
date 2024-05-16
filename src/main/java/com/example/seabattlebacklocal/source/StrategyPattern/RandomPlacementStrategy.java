@@ -9,7 +9,7 @@ import com.example.seabattlebacklocal.source.Player;
 import com.example.seabattlebacklocal.source.FactoryPattern.*;
 import com.example.seabattlebacklocal.source.Ships.Ship;
 
-public class RandomPlacementStrategy  {
+public class RandomPlacementStrategy implements PlacementStrategy {
     private Random random = new Random();
 
     enum SHIPTYPE {
@@ -17,8 +17,8 @@ public class RandomPlacementStrategy  {
     }
 
     
-    public void placeShips( Player player) {
-
+    public List<Ship> placeShips( Player player) {
+        List<Ship> ships = new ArrayList<>();
         for (SHIPTYPE type : SHIPTYPE.values()) {
             Ship ship;
             List<Coordinate> coordinates = new ArrayList<Coordinate>();
@@ -73,6 +73,8 @@ public class RandomPlacementStrategy  {
                     placed = true;
                 }
             }
+            ships.add(ship);
         }
+        return ships;
     }
 }

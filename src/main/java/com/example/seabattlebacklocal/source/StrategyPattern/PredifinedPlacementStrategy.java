@@ -8,9 +8,8 @@ import com.example.seabattlebacklocal.source.Player;
 import com.example.seabattlebacklocal.source.Ships.*;
 
 public class PredifinedPlacementStrategy implements PlacementStrategy{
-
     @Override
-    public void placeShips(Player player) {
+    public List<Ship> placeShips(Player player) {
         // For testing, we'll just place all the ships along the top row of the board
         List<Ship> ships = new ArrayList<>(); 
         for(int i=0; i<4; i++){
@@ -28,6 +27,7 @@ public class PredifinedPlacementStrategy implements PlacementStrategy{
                 player.getGameBoard().placeShip(ship,ship.getCoordinates().get(0), ship.getCoordinates().get(1));
             }
         }
+        return ships;
     }
 
     private List<Coordinate> createCoordinates(int size, int row, int col){

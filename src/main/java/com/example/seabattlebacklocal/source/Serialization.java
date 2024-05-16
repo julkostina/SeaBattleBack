@@ -16,10 +16,12 @@ public class Serialization {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public Serialization(){
-        this.fileName = "C:\\Users\\User\\IdeaProjects\\SeaBattleBackLocal\\Game.json";
+        this.fileName = "SeaBattleBackLocal\\Game.json";
         this.objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
-
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
 public void writeFile(Dictionary<String, String> data) {
     Gson gson = new Gson();

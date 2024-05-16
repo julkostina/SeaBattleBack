@@ -1,7 +1,10 @@
 package com.example.seabattlebacklocal.source.StrategyPattern;
 
+import java.util.List;
+
 import com.example.seabattlebacklocal.source.Player;
+import com.example.seabattlebacklocal.source.Ships.Ship;
 
 public interface PlacementStrategy {
-    void placeShips(Player player);
+    List<Ship> placeShips(Player player);
 }

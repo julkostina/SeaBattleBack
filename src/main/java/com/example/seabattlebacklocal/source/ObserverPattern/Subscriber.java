@@ -14,9 +14,9 @@ public class Subscriber {
         subscribers.remove(observer);
     }
 
-    public void notifySubscribers(){
+    public void notifySubscribers(int turn){
         for(Observer observer : subscribers){
-            observer.updateTurn();
+            observer.updateTurn(turn);
         }
     }
 }

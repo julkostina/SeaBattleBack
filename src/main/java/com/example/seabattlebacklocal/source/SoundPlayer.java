@@ -26,4 +26,21 @@ public class SoundPlayer {
             ex.printStackTrace();
         }
     }
+    public void playSoundContinuously() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFileName).getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+
+            // Control the volume
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(volume); 
+
+            // Loop the clip continuously
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch(Exception ex) {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace();
+        }
+    }
 }
