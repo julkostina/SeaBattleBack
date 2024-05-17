@@ -3,26 +3,29 @@ package com.example.seabattlebacklocal.source;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Dictionary;
+import java.util.Hashtable;
 
 import com.example.seabattlebacklocal.source.Player.Placement;
 import com.example.seabattlebacklocal.source.ObserverPattern.GameBoard;
 import com.example.seabattlebacklocal.source.ObserverPattern.Subscriber;
 
 public class GameEngine {
-    private Dictionary<String, Player> players;
+    private Dictionary<String, Player> players= new Hashtable<>();
     private SoundPlayer backgroundSound;
-    private Subscriber subscriber;
+    private Subscriber subscriber = new Subscriber();
     private Serialization serialization = new Serialization();
     private Game data = new Game();
-    private Dictionary<String, GameBoard> gameBoards;
+    private Dictionary<String, GameBoard> gameBoards = new Hashtable<>();
 
     public GameEngine() {
         data = serialization.readFile();
-        backgroundSound = new SoundPlayer("src\\main\\java\\com\\example\\seabattlebacklocal\\source\\sounds\\328713-Ambience_Exterior_Wave_Boulders_Pier_Between_Rocks_More_Distant_Waves_Hard_Loop.wav",
+        backgroundSound = new SoundPlayer(
                 data.volume);
         backgroundSound.playSoundContinuously();
     }
-
+    public Game getGame() {
+        return data;
+    }
     public void initGame(String name1, String name2, int size, float volume) {
         data.volume=volume;
         gameBoards.put("ofPlayer1", new GameBoard(size));
@@ -43,18 +46,18 @@ public class GameEngine {
         } else {
             makeAShoot(x, y, 2);
         }
-        notifyObservers(data.turn);
+        subscriber.notifySubscribers(data.turn);
     }
+
     public void chooseStrartegy(Placement strategy, int playerNum) {
         if (strategy.equals(Placement.RANDOM.toString())) {
-            players.get("player"+playerNum).placeShips(Placement.RANDOM);
+            players.get("player"+playerNum).placeShips(Placement.RANDOM, playerNum);
         } else {
-            players.get("player"+playerNum).placeShips(Placement.CUSTOM);
+            players.get("player"+playerNum).placeShips(Placement.CUSTOM, playerNum);
         }
     }
-    public void notifyObservers(int turn) {
-        subscriber.notifySubscribers(turn);
-    }
+
+
 
     public Boolean saveGame() {
         try (FileWriter file = new FileWriter("gameState.json")) {
@@ -90,13 +93,13 @@ public class GameEngine {
     }
 
     private void makeAShoot(int x, int y, int player) {
-        SoundPlayer shotSound = new SoundPlayer("src\\main\\java\\com\\example\\seabattlebacklocal\\source\\sounds\\249101-Light_Naval_Cannon_Blast_4.wav",
-                data.volume);
-                shotSound.playSound();
+        // SoundPlayer shotSound = new SoundPlayer(data.volume);
+        // shotSound.setSound("src\\main\\java\\com\\example\\seabattlebacklocal\\source\\sounds\\249101-Light_Naval_Cannon_Blast_4.wav");
+        // shotSound.playSound();
         if(player == 1){
-            players.get("player1").makeMove(new Coordinate(x, y), data.miss1, data.hit1,data.turn);
+            players.get("player1").makeMove(new Coordinate(x, y, data.sizeOfBoard), data.miss1, data.hit1,data.turn);
         } else {
-            players.get("player2").makeMove(new Coordinate(x, y), data.miss2, data.hit2,data.turn);
+            players.get("player2").makeMove(new Coordinate(x, y, data.sizeOfBoard), data.miss2, data.hit2,data.turn);
         }
     }
 

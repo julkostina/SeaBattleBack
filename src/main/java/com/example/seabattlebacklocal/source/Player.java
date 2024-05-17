@@ -51,12 +51,12 @@ public class Player {
         if (gameBoard.isEmpty(target.getRow(), target.getColumn())) {
             gameBoard.setMiss(target.getRow(), target.getColumn());
             miss++;
-            data.put("miss" + data.get("turn"),this.miss);
+            data.put("miss" + turn,this.miss);
         } 
         if (gameBoard.isShip(target.getRow(), target.getColumn())) {
             gameBoard.setHit(target.getRow(), target.getColumn());
             hit++;
-            data.put("hit" + data.get("turn"), this.hit);
+            data.put("hit" + turn, this.hit);
         }
         gameBoard.makeMove(target);
         return data;
@@ -64,17 +64,17 @@ public class Player {
 
 
 
-    public Dictionary<String, String> placeShips(Placement placement) {
+    public Dictionary<String, String> placeShips(Placement placement, int turn) {
         Dictionary<String, String> data = new Hashtable<String, String>();
         if (placement == Placement.RANDOM) {
-            data.put(data.get("placementStrategy"+data.get("turn")), "RANDOM");
+            data.put("placementStrategy"+turn, "RANDOM");
             RandomPlacementStrategy placementStrategy  = new RandomPlacementStrategy();
             placementStrategy.placeShips(this);
-            data.put(data.get("placed"+data.get("turn")), "true");
+            data.put(data.get("placed"+turn), "true");
         }
         else{
-            data.put(data.get("placementStrategy"+data.get("turn")), "CUSTOM");
-            data.put(data.get("placed"+data.get("turn")), "true");
+            data.put("placementStrategy"+turn,  "CUSTOM");
+            data.put("placed"+turn, "true");
         }
         return data;
     }

@@ -1,14 +1,12 @@
 package com.example.seabattlebacklocal.source;
-import java.util.Dictionary;
 
 public class Coordinate {
 
     private int row;
     private int column;
-    private Dictionary<String, String> data;
 
-    public Coordinate(int row, int column) {
-        if (isValid()) {
+    public Coordinate(int row, int column, int size) {
+        if (isValid(size)) {
             this.column = column;
             this.row = row;
         }
@@ -25,7 +23,7 @@ public class Coordinate {
         return column;
     }
 
-    public Boolean isValid() {
-        return row <= Integer.parseInt(data.get("sizeOfBoard")) && column <= Integer.parseInt(data.get("sizeOfBoard"));
+    public Boolean isValid(int size) {
+        return row <= size && column <= size;
     }
 }

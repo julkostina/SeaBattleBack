@@ -1,46 +1,40 @@
 package com.example.seabattlebacklocal.source;
 
+import javafx.application.Platform;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 import java.io.File;
-import javax.sound.sampled.*;
 
 public class SoundPlayer {
-    private String soundFileName;
-    private float volume;
-    public SoundPlayer(String soundFileName, float volume ) {
-        this.soundFileName = soundFileName;
-        this.volume = volume;
+    String filePath = "src/main/java/com/example/seabattlebacklocal/source/sounds/328713-Ambience_Exterior_Wave_Boulders_Pier_Between_Rocks_More_Distant_Waves_Hard_Loop.wav";
+    private MediaPlayer mediaPlayer;
+
+    public SoundPlayer(float volume) {
+        // Initialize the JavaFX toolkit if it's not already initialized
+        if (!Platform.isFxApplicationThread()) {
+            Platform.startup(() -> {
+                mediaPlayer = new MediaPlayer(new Media(new File(filePath).toURI().toString()));
+                mediaPlayer.setVolume(volume);
+            });
+        } else {
+            mediaPlayer = new MediaPlayer(new Media(new File(filePath).toURI().toString()));
+            mediaPlayer.setVolume(volume);
+        }
     }
+
     public void playSound() {
-        try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFileName).getAbsoluteFile());
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-
-            // Control the volume
-            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            gainControl.setValue(volume); 
-
-            clip.start();
-        } catch(Exception ex) {
-            System.out.println("Error with playing sound.");
-            ex.printStackTrace();
-        }
+        Platform.runLater(() -> mediaPlayer.play());
     }
+
+    public void setSound(String filePath) {
+        this.filePath = filePath;
+    }
+
     public void playSoundContinuously() {
-        try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFileName).getAbsoluteFile());
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-
-            // Control the volume
-            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            gainControl.setValue(volume); 
-
-            // Loop the clip continuously
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch(Exception ex) {
-            System.out.println("Error with playing sound.");
-            ex.printStackTrace();
-        }
+        Platform.runLater(() -> {
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            mediaPlayer.play();
+        });
     }
 }

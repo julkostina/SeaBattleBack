@@ -11,18 +11,20 @@ import com.example.seabattlebacklocal.source.Ships.Ship;
 
 public class RandomPlacementStrategy implements PlacementStrategy {
     private Random random = new Random();
-
+    private int sizeOfBoard=8;
     enum SHIPTYPE {
         ONE_DECK, TWO_DECK, THREE_DECK, FOUR_DECK
     }
 
-    
+    public void setSize(int size){
+        this.sizeOfBoard=size;
+    }
     public List<Ship> placeShips( Player player) {
         List<Ship> ships = new ArrayList<>();
         for (SHIPTYPE type : SHIPTYPE.values()) {
             Ship ship;
             List<Coordinate> coordinates = new ArrayList<Coordinate>();
-            coordinates.add(new Coordinate(0, 0));
+            coordinates.add(new Coordinate(0, 0, sizeOfBoard));
             ShipFactory factory;
                 switch (type) {
                     case ONE_DECK:
@@ -64,8 +66,8 @@ public class RandomPlacementStrategy implements PlacementStrategy {
                         startColumn -= ship.getSize() - 1;
                     }
                 }
-                Coordinate start = new Coordinate(startRow, startColumn);
-                Coordinate end = new Coordinate(endRow, endColumn);
+                Coordinate start = new Coordinate(startRow, startColumn,sizeOfBoard );
+                Coordinate end = new Coordinate(endRow, endColumn, sizeOfBoard);
 
                 // Try to place the ship. If it doesn't fit, we'll try again with new
                 // coordinates.
