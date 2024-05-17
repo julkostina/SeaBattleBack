@@ -5,8 +5,8 @@ import javax.sound.sampled.*;
 
 public class SoundPlayer {
     private String soundFileName;
-    private int volume;
-    public SoundPlayer(String soundFileName, int volume ) {
+    private float volume;
+    public SoundPlayer(String soundFileName, float volume ) {
         this.soundFileName = soundFileName;
         this.volume = volume;
     }

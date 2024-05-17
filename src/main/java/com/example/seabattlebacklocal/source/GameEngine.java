@@ -12,19 +12,19 @@ public class GameEngine {
     private Dictionary<String, Player> players;
     private SoundPlayer backgroundSound;
     private Subscriber subscriber;
-    private Serialization serialization;
-    private Dictionary<String, String> data;
+    private Serialization serialization = new Serialization();
+    private Game data = new Game();
     private Dictionary<String, GameBoard> gameBoards;
 
     public GameEngine() {
-        backgroundSound = new SoundPlayer("sounds\\249101-Light_Naval_Cannon_Blast_4.wav",
-                Integer.parseInt(data.get("volume")));
-        backgroundSound.playSoundContinuously();
         data = serialization.readFile();
+        backgroundSound = new SoundPlayer("src\\main\\java\\com\\example\\seabattlebacklocal\\source\\sounds\\328713-Ambience_Exterior_Wave_Boulders_Pier_Between_Rocks_More_Distant_Waves_Hard_Loop.wav",
+                data.volume);
+        backgroundSound.playSoundContinuously();
     }
 
-    public void initGame(String name1, String name2, int size, int volume) {
-        data.put("volume", String.valueOf(volume));
+    public void initGame(String name1, String name2, int size, float volume) {
+        data.volume=volume;
         gameBoards.put("ofPlayer1", new GameBoard(size));
         gameBoards.put("ofPlayer2Opponent", new GameBoard(size));
         gameBoards.put("ofPlayer1Opponent", new GameBoard(size));
@@ -38,12 +38,12 @@ public class GameEngine {
     }
 
     public void updateGame(int x, int y) {
-        if(data.get("turn").equals("1")){
+        if(data.turn==1){
             makeAShoot(x, y, 1);
         } else {
             makeAShoot(x, y, 2);
         }
-        notifyObservers(Integer.parseInt(data.get("turn")));
+        notifyObservers(data.turn);
     }
     public void chooseStrartegy(Placement strategy, int playerNum) {
         if (strategy.equals(Placement.RANDOM.toString())) {
@@ -90,13 +90,14 @@ public class GameEngine {
     }
 
     private void makeAShoot(int x, int y, int player) {
-        SoundPlayer shotSound = new SoundPlayer("sounds\\249101-Light_Naval_Cannon_Blast_4.wav",
-                Integer.parseInt(data.get("volume")));
+        SoundPlayer shotSound = new SoundPlayer("src\\main\\java\\com\\example\\seabattlebacklocal\\source\\sounds\\249101-Light_Naval_Cannon_Blast_4.wav",
+                data.volume);
                 shotSound.playSound();
         if(player == 1){
-            players.get("player1").makeMove(new Coordinate(x, y), Integer.parseInt(data.get("miss1")), Integer.parseInt(data.get("hit1")),Integer.parseInt(data.get("turn")));
+            players.get("player1").makeMove(new Coordinate(x, y), data.miss1, data.hit1,data.turn);
         } else {
-            players.get("player2").makeMove(new Coordinate(x, y), Integer.parseInt(data.get("miss2")), Integer.parseInt(data.get("hit2")),Integer.parseInt(data.get("turn")));
+            players.get("player2").makeMove(new Coordinate(x, y), data.miss2, data.hit2,data.turn);
         }
     }
+
 }

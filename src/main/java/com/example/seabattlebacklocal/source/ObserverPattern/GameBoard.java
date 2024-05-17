@@ -98,7 +98,7 @@ public class GameBoard implements Observer {
         if (isShip(start.getRow(), start.getColumn()) || isShip(end.getRow(), end.getColumn())) {
             return result;
         }
-        Placement placement = null;
+        Placement placement = Placement.HORIZONTAL_LEFT;
         ships.add(ship);
         if (ship.getSize() == 1) {
             updateNumberOfShips("oneDeck", '-');

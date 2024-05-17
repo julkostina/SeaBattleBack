@@ -2,7 +2,7 @@
   "player1": "",
   "player2": "",
   "turn": 1,
-  "volume": 50,
+  "volume": -2,
   "sizeOfBoard": 8,
   "ships1": {
     "oneDeck": 4,

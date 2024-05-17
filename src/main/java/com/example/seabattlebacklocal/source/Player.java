@@ -8,7 +8,7 @@ import com.example.seabattlebacklocal.source.StrategyPattern.RandomPlacementStra
 
 
 public class Player {
-    enum Placement {
+    public enum Placement {
         RANDOM,
         CUSTOM
     }

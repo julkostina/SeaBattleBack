@@ -3,20 +3,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.gson.Gson;
 
-import java.nio.file.Files;
-import java.io.*;
-import java.nio.file.Paths;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class Serialization {
+import java.io.*;
+import java.util.Dictionary;
+
+
+public class Serialization  {
     private String fileName;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public Serialization(){
-        this.fileName = "SeaBattleBackLocal\\Game.json";
+        this.fileName = "Game.json";
         this.objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
     public void setFileName(String fileName) {
@@ -32,25 +29,14 @@ public void writeFile(Dictionary<String, String> data) {
     }
 }
 
-    public Dictionary<String, String> readFile() {
-        String content="";
-        try{
-           content = new String(Files.readAllBytes(Paths.get(fileName)));
-        }
-        catch(IOException e){
-            throw new RuntimeException(e);
-        }
-        Pattern pattern = Pattern.compile("\\b\\w+\\b");
-        Matcher matcher = pattern.matcher(content);
-        StringBuilder sb = new StringBuilder();
-        while (matcher.find()) {
-            sb.append(matcher.group()).append(" ");
-        }
-        String[] words = sb.toString().trim().split("\\s+");
-        Dictionary<String, String> dictionary = new Hashtable<>();
-            for(int i=0; i< words.length;i+=2){
-                dictionary.put(words[i], words[i+1]);
-            }
-        return dictionary;
+    public Game readFile() {
+        Gson gson = new Gson();
+    try (FileReader reader = new FileReader("Game.json")) {
+        Game game = gson.fromJson(reader, Game.class);
+        return game;
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return null;
     }
 }
