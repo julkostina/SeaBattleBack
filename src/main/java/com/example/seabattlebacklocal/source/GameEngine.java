@@ -41,17 +41,17 @@ public class GameEngine implements Observer{
     }
 
     public void initGame(String name1, String name2, int size, float volume) {
-        data.volume=volume;
+//        data.volume=volume;
         gameBoards.put("ofPlayer1", new GameBoard(size));
         gameBoards.put("ofPlayer2Opponent", new GameBoard(size));
         gameBoards.put("ofPlayer1Opponent", new GameBoard(size));
         gameBoards.put("ofPlayer2", new GameBoard(size));
         players.put("player1", new Player(name1, gameBoards.get("ofPlayer1")));
         players.put("player2", new Player(name2, gameBoards.get("ofPlayer2")));
-        subscriber.addSubscriber(EventType.UPDATE_TURN,gameBoards.get("ofPlayer1"));
-        subscriber.addSubscriber(EventType.UPDATE_TURN,gameBoards.get("ofPlayer2"));
-        subscriber.addSubscriber(EventType.UPDATE_TURN,gameBoards.get("ofPlayer1Opponent"));
-        subscriber.addSubscriber(EventType.UPDATE_TURN,gameBoards.get("ofPlayer2Opponent"));
+//        subscriber.addSubscriber(EventType.UPDATE_TURN,gameBoards.get("ofPlayer1"));
+//        subscriber.addSubscriber(EventType.UPDATE_TURN,gameBoards.get("ofPlayer2"));
+//        subscriber.addSubscriber(EventType.UPDATE_TURN,gameBoards.get("ofPlayer1Opponent"));
+//        subscriber.addSubscriber(EventType.UPDATE_TURN,gameBoards.get("ofPlayer2Opponent"));
     }
 
     public void updateGame(int x, int y, int sizeOfShip) {
