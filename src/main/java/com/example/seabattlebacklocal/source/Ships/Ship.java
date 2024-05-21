@@ -1,4 +1,5 @@
 package com.example.seabattlebacklocal.source.Ships;
+import java.util.ArrayList;
 import java.util.List;
 import com.example.seabattlebacklocal.source.Coordinate;
 
@@ -6,10 +7,9 @@ public abstract class Ship {
     protected Boolean isSunk = false;
     int size = 0;
     int hitPoints = 0;
-    List<Coordinate> coordinates;
+    List<Coordinate> coordinates =  new ArrayList();
 
     public Ship(){
-
     }
     public Ship(List<Coordinate> coordinates){
         this.coordinates = coordinates;
@@ -17,10 +17,13 @@ public abstract class Ship {
     public int getSize() {
         return size;
     };
+    protected void setSize(int size){
+        this.size=size;
+    }
+
     public List<Coordinate> getCoordinates() {
         return coordinates;
     }
-    abstract public void setSize();
 
     public int getHitPoints() {
         return hitPoints;
@@ -31,11 +34,10 @@ public abstract class Ship {
     }
 
     public void hit() {
-        if (size == hitPoints && hitPoints != 0) {
+        hitPoints++;
+        if (size == hitPoints) {
             isSunk = true;
-        } else {
-            hitPoints++;
-            size--;
         }
+        size--;
     }
 }

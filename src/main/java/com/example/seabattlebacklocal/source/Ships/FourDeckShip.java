@@ -7,11 +7,8 @@ import com.example.seabattlebacklocal.source.Coordinate;
 public class FourDeckShip  extends Ship{
     public FourDeckShip(List<Coordinate> coordinates){
         super(coordinates);
-        setSize();
+        size=4;
     }
-    @Override
-    public void setSize() {
-        size = 4;
-    }
+
 }
 

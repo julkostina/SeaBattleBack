@@ -9,6 +9,9 @@ public class Game {
     int turn;
     float volume;
     int sizeOfBoard;
+    public int getSizeOfBoard(){
+        return sizeOfBoard;
+    }
     ShipTypes ships1;
     String placementStrategy1;
     String placementStrategy2;

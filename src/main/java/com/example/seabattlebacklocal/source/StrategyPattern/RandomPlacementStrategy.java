@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Random;
 
 import com.example.seabattlebacklocal.source.Coordinate;
-import com.example.seabattlebacklocal.source.Player;
+import com.example.seabattlebacklocal.source.ObserverPattern.GameBoard;
 import com.example.seabattlebacklocal.source.FactoryPattern.*;
 import com.example.seabattlebacklocal.source.Ships.Ship;
 
-public class RandomPlacementStrategy implements PlacementStrategy {
+public class RandomPlacementStrategy extends PlacementStrategy {
     private Random random = new Random();
     private int sizeOfBoard=8;
     enum SHIPTYPE {
@@ -19,7 +19,7 @@ public class RandomPlacementStrategy implements PlacementStrategy {
     public void setSize(int size){
         this.sizeOfBoard=size;
     }
-    public List<Ship> placeShips( Player player) {
+    public List<Ship> placeShips( GameBoard gameBoard) {
         List<Ship> ships = new ArrayList<>();
         for (SHIPTYPE type : SHIPTYPE.values()) {
             Ship ship;
@@ -46,13 +46,13 @@ public class RandomPlacementStrategy implements PlacementStrategy {
             ship = factory.createShip(coordinates);
             boolean placed = false;
             while (!placed) {
-                int startRow = random.nextInt(player.getGameBoard().getSize());
-                int startColumn = random.nextInt(player.getGameBoard().getSize());
+                int startRow = random.nextInt(gameBoard.getSize());
+                int startColumn = random.nextInt(gameBoard.getSize());
                 int endRow = startRow;
                 int endColumn = startColumn;
                 // If the ship is vertical, adjust the end row
                 if (random.nextBoolean()) {
-                    if (startRow + ship.getSize() - 1 < player.getGameBoard().getSize()) {
+                    if (startRow + ship.getSize() - 1 < gameBoard.getSize()) {
                         endRow += ship.getSize() - 1;
                     } else {
                         startRow -= ship.getSize() - 1;
@@ -60,7 +60,7 @@ public class RandomPlacementStrategy implements PlacementStrategy {
                 }
                 // If the ship is horizontal, adjust the end column
                 else {
-                    if (startColumn + ship.getSize() - 1 < player.getGameBoard().getSize()) {
+                    if (startColumn + ship.getSize() - 1 < gameBoard.getSize()) {
                         endColumn += ship.getSize() - 1;
                     } else {
                         startColumn -= ship.getSize() - 1;
@@ -71,12 +71,14 @@ public class RandomPlacementStrategy implements PlacementStrategy {
 
                 // Try to place the ship. If it doesn't fit, we'll try again with new
                 // coordinates.
-                if (player.getGameBoard().placeShip(ship, start, end)) {
+                if (gameBoard.placeShip(ship, start, end)) {
                     placed = true;
                 }
             }
             ships.add(ship);
+            this.setDistanceAroundShip(ship, gameBoard);
         }
         return ships;
     }
+
 }

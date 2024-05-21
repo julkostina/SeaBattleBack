@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.seabattlebacklocal.source.Coordinate;
-import com.example.seabattlebacklocal.source.Player;
+import com.example.seabattlebacklocal.source.ObserverPattern.GameBoard;
 import com.example.seabattlebacklocal.source.Ships.*;
 
-public class PredifinedPlacementStrategy implements PlacementStrategy{
+public class PredifinedPlacementStrategy extends PlacementStrategy{
     private int sizeOfBoard=8;
     public void setSize(int size){
         this.sizeOfBoard=size;
     }
     @Override
-    public List<Ship> placeShips(Player player) {
+    public List<Ship> placeShips(GameBoard gameBoard) {
         // For testing, we'll just place all the ships along the top row of the board
         List<Ship> ships = new ArrayList<>(); 
         for(int i=0; i<4; i++){
@@ -28,7 +28,8 @@ public class PredifinedPlacementStrategy implements PlacementStrategy{
         ships.add(new FourDeckShip(createCoordinates(4, 6,0))); 
         for (Ship ship : ships) {
             for (int i = 0; i < ship.getSize(); i++) {
-                player.getGameBoard().placeShip(ship,ship.getCoordinates().get(0), ship.getCoordinates().get(1));
+                gameBoard.placeShip(ship,ship.getCoordinates().get(0), ship.getCoordinates().get(1));
+                this.setDistanceAroundShip(ship, gameBoard);
             }
         }
         return ships;
