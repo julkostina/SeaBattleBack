@@ -1,4 +1,4 @@
-package com.example.seabattlebacklocal.source.ObserverPattern;
+package com.example.seabattlebacklocal.source;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -7,7 +7,7 @@ import java.util.List;
 import com.example.seabattlebacklocal.source.Coordinate;
 import com.example.seabattlebacklocal.source.Ships.Ship;
 
-public class GameBoard implements Observer {
+public class GameBoard   {
     private static final int EMPTY = 0;
     private static final int SHIP = 1;
     private static final int HIT = 2;
@@ -314,14 +314,5 @@ public class GameBoard implements Observer {
             // Update the dictionary with the new coordinates
             coordinatesOfShips.put(shipType, coordinates);
         return coordinatesOfShips;
-    }
-
-    @Override
-    public int update(EventType event,int turn) {
-        if (turn==1) {
-            return 2;
-        } else {
-            return 1;
-        }
     }
 }

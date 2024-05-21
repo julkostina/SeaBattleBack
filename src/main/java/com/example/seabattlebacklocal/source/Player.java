@@ -3,10 +3,6 @@ package com.example.seabattlebacklocal.source;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-import com.example.seabattlebacklocal.source.ObserverPattern.GameBoard;
-import com.example.seabattlebacklocal.source.StrategyPattern.CustomPlacementStrategy;
-import com.example.seabattlebacklocal.source.StrategyPattern.RandomPlacementStrategy;
-
 
 public class Player {
     public enum Placement {
@@ -60,13 +56,13 @@ public class Player {
         Dictionary<String, String> data = new Hashtable<String, String>();
         if (placement == Placement.RANDOM) {
             data.put("placementStrategy"+turn, "RANDOM");
-            RandomPlacementStrategy placementStrategy  = new RandomPlacementStrategy();
+            RandomPlacement placementStrategy  = new RandomPlacement();
             placementStrategy.placeShips(this.getGameBoard());
             data.put(data.get("placed"+turn), "true");
         }
         else{
             data.put("placementStrategy"+turn,  "CUSTOM");
-            CustomPlacementStrategy placementStrategy = new CustomPlacementStrategy();
+            CustomPlacement placementStrategy = new CustomPlacement();
             placementStrategy.placeShips(this.getGameBoard());
             data.put("placed"+turn, "true");
         }

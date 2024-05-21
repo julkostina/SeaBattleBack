@@ -5,16 +5,11 @@ import java.io.IOException;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-import com.example.seabattlebacklocal.source.ObserverPattern.EventType;
-import com.example.seabattlebacklocal.source.ObserverPattern.Updater;
 import com.example.seabattlebacklocal.source.Player.Placement;
-import com.example.seabattlebacklocal.source.ObserverPattern.GameBoard;
-import com.example.seabattlebacklocal.source.ObserverPattern.Observer;
 
-public class GameEngine implements Observer{
+
+public class GameEngine {
     private final Dictionary<String, Player> players= new Hashtable<>();
-    private SoundPlayer backgroundSound;
-    private final Updater subscriber = new Updater();
     private final Serialization serialization = new Serialization();
     private Game data;
     private int shipSize;
@@ -22,9 +17,6 @@ public class GameEngine implements Observer{
 
     public GameEngine() {
         data = serialization.readFile();
-        backgroundSound = SoundPlayer.getInstance();
-        backgroundSound.setVolume(data.volume);
-        backgroundSound.playSoundContinuously();
     }
 
     public Game getGame(){
@@ -60,7 +52,6 @@ public class GameEngine implements Observer{
         } else {
             makeAShot(x, y, 2,sizeOfShip);
         }
-        subscriber.notifySubscribers(EventType.UPDATE_TURN,data.turn);
     }
 
     public void chooseStrartegy(Placement strategy, int playerNum) {
@@ -115,12 +106,6 @@ public class GameEngine implements Observer{
         }
     }
 
-    @Override
-    public int update(EventType event, int turn) {
-        if(event == EventType.UPDATE_SHIPS){
-            return 1;
-        }
-        return -1;
-    }
+
 
 }

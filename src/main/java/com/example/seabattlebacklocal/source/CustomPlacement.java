@@ -1,14 +1,11 @@
-package com.example.seabattlebacklocal.source.StrategyPattern;
+package com.example.seabattlebacklocal.source;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.seabattlebacklocal.source.ObserverPattern.EventType;
-import com.example.seabattlebacklocal.source.ObserverPattern.GameBoard;
-import com.example.seabattlebacklocal.source.ObserverPattern.Updater;
+import com.example.seabattlebacklocal.source.GameBoard;
 import com.example.seabattlebacklocal.source.Coordinate;
 import com.example.seabattlebacklocal.source.GameEngine;
-import com.example.seabattlebacklocal.source.Player;
 import com.example.seabattlebacklocal.source.FactoryPattern.FourDeckFactory;
 import com.example.seabattlebacklocal.source.FactoryPattern.OneDeckFactory;
 import com.example.seabattlebacklocal.source.FactoryPattern.ShipFactory;
@@ -16,14 +13,12 @@ import com.example.seabattlebacklocal.source.FactoryPattern.ThreeDeckFactory;
 import com.example.seabattlebacklocal.source.FactoryPattern.TwoDeckFactory;
 import com.example.seabattlebacklocal.source.Ships.Ship;
 
-public class CustomPlacementStrategy extends PlacementStrategy {
-    Updater subscribers = new Updater();
+public class CustomPlacement  {
     GameEngine gameEngine = new GameEngine();
     List<Coordinate> coordinatesForShip = new ArrayList();
     
     public void setGameEngine(GameEngine gameEngine){
         this.gameEngine= gameEngine;
-        subscribers.addSubscriber(EventType.UPDATE_SHIPS, gameEngine);
     }
     private Ship setShip(int size){
             ShipFactory factory;
@@ -43,7 +38,6 @@ public class CustomPlacementStrategy extends PlacementStrategy {
                     default:
                         throw new IllegalArgumentException("Invalid ship type");   
             }
-            subscribers.notifySubscribers(EventType.UPDATE_SHIPS, 1);
             return factory.createShip(coordinatesForShip);
     }
     
@@ -55,7 +49,6 @@ public class CustomPlacementStrategy extends PlacementStrategy {
             System.out.println(e.getMessage());
         }
     }
-    @Override
     public List<Ship> placeShips(GameBoard gameBoard) {
         List<Ship> ships = new ArrayList<>();
         int repeats=(gameEngine.getShipSize()%4==0)? 1: gameEngine.getShipSize()%4;
@@ -70,5 +63,14 @@ public class CustomPlacementStrategy extends PlacementStrategy {
             }
         }
         return ships;
+    }
+    private void setDistanceAroundShip(Ship ship, GameBoard gameBoard){
+        List<Coordinate> coordinates = ship.getCoordinates();
+        for(int i =0; i< coordinates.size();i++){
+            gameBoard.setDistanceForShip(coordinates.get(i).getRow(), coordinates.get(i).getColumn());
+            if(i>0){
+                gameBoard.setShip(coordinates.get(i-1).getRow(), coordinates.get(i-1).getColumn());
+            }
+        }
     }
 }

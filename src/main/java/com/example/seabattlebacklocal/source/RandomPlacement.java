@@ -1,15 +1,15 @@
-package com.example.seabattlebacklocal.source.StrategyPattern;
+package com.example.seabattlebacklocal.source;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import com.example.seabattlebacklocal.source.Coordinate;
-import com.example.seabattlebacklocal.source.ObserverPattern.GameBoard;
+import com.example.seabattlebacklocal.source.GameBoard;
 import com.example.seabattlebacklocal.source.FactoryPattern.*;
 import com.example.seabattlebacklocal.source.Ships.Ship;
 
-public class RandomPlacementStrategy extends PlacementStrategy {
+public class RandomPlacement  {
     private Random random = new Random();
     private int sizeOfBoard=8;
     enum SHIPTYPE {
@@ -80,5 +80,13 @@ public class RandomPlacementStrategy extends PlacementStrategy {
         }
         return ships;
     }
-
+    private void setDistanceAroundShip(Ship ship, GameBoard gameBoard){
+        List<Coordinate> coordinates = ship.getCoordinates();
+        for(int i =0; i< coordinates.size();i++){
+            gameBoard.setDistanceForShip(coordinates.get(i).getRow(), coordinates.get(i).getColumn());
+            if(i>0){
+                gameBoard.setShip(coordinates.get(i-1).getRow(), coordinates.get(i-1).getColumn());
+            }
+        }
+    }
 }
