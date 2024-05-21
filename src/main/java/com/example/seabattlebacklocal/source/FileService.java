@@ -1,4 +1,4 @@
-package com.example.seabattlebacklocal.source.StateGame;
+package com.example.seabattlebacklocal.source;
 
 import jakarta.annotation.Resource;
 import org.springframework.core.io.UrlResource;

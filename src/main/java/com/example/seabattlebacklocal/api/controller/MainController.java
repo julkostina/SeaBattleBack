@@ -1,7 +1,7 @@
 package com.example.seabattlebacklocal.api.controller;
 import com.example.seabattlebacklocal.source.GameEngine;
 import com.example.seabattlebacklocal.source.Serialization;
-import com.example.seabattlebacklocal.source.StateGame.FileService;
+import com.example.seabattlebacklocal.source.FileService;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -11,13 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 public class MainController {
     private final String ORIGIN = "http://localhost:3000";
     private final FileService fileService = new FileService();
-    Serialization serialization = new Serialization();
+    Serialization serialization =  Serialization.getInstance();
     GameEngine game = new GameEngine();    
 
 

@@ -9,9 +9,15 @@ import java.util.Dictionary;
 
 
 public class Serialization  {
+    private static Serialization instance;
     private String fileName;
-
-    public Serialization(){
+    public static  Serialization getInstance() {
+        if (instance == null) {
+            instance = new Serialization();
+        }
+        return instance;
+    }
+    private Serialization(){
         this.fileName = "Game.json";
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
