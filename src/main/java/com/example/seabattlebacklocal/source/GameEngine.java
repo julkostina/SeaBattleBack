@@ -10,13 +10,17 @@ import com.example.seabattlebacklocal.source.Player.Placement;
 
 public class GameEngine {
     private final Dictionary<String, Player> players= new Hashtable<>();
-    private final Serialization serialization = new Serialization();
+    private final Serialization serialization = Serialization.getInstance();
     private Game data;
     private int shipSize;
     private final Dictionary<String, GameBoard> gameBoards = new Hashtable<>();
 
     public GameEngine() {
         data = serialization.readFile();
+    }
+
+    public GameEngine(Game data) {
+        this.data = data;
     }
 
     public Game getGame(){
@@ -38,12 +42,8 @@ public class GameEngine {
         gameBoards.put("ofPlayer2Opponent", new GameBoard(size));
         gameBoards.put("ofPlayer1Opponent", new GameBoard(size));
         gameBoards.put("ofPlayer2", new GameBoard(size));
-        players.put("player1", new Player(name1, gameBoards.get("ofPlayer1")));
-        players.put("player2", new Player(name2, gameBoards.get("ofPlayer2")));
-//        subscriber.addSubscriber(EventType.UPDATE_TURN,gameBoards.get("ofPlayer1"));
-//        subscriber.addSubscriber(EventType.UPDATE_TURN,gameBoards.get("ofPlayer2"));
-//        subscriber.addSubscriber(EventType.UPDATE_TURN,gameBoards.get("ofPlayer1Opponent"));
-//        subscriber.addSubscriber(EventType.UPDATE_TURN,gameBoards.get("ofPlayer2Opponent"));
+        players.put("player1", new PlayerBuilder(new Player("", gameBoards.get("ofPlayer1"))).setName(name1).build());
+        players.put("player2", new PlayerBuilder(new Player("", gameBoards.get("ofPlayer2"))).setName(name2).build());
     }
 
     public void updateGame(int x, int y, int sizeOfShip) {
@@ -54,7 +54,7 @@ public class GameEngine {
         }
     }
 
-    public void chooseStrartegy(Placement strategy, int playerNum) {
+    public void chooseStrategy(Placement strategy, int playerNum) {
         if (strategy.equals(Placement.RANDOM)) {
             players.get("player"+playerNum).placeShips(Placement.RANDOM, playerNum);
         } else {

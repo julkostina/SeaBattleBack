@@ -1,42 +1,19 @@
 package com.example.seabattlebacklocal.source;
 
-import java.util.List;
-
-
 public class Game {
-    String player1;
-    String player2;
-    int turn;
-    float volume;
-    int sizeOfBoard;
-    public int getSizeOfBoard(){
-        return sizeOfBoard;
-    }
-    ShipTypes ships1;
-    String placementStrategy1;
-    String placementStrategy2;
-    PlacedShips placedShips1;
-    PlacedShips placedShips2;
-    boolean placed1;
-    boolean placed2;
-    ShipTypes ships2;
-    int hit1;
-    int hit2;
-    int miss1;
-    int miss2;
-}
+    public String player1;
+    public String player2;
+    public int turn;
+    public int sizeOfBoard;
 
-class ShipTypes {
-    int oneDeck;
-    int twoDeck;
-    int threeDeck;
-    int fourDeck;
-}
-
-
-class PlacedShips {
-    List<String> oneDeck;
-    List<String> twoDeck;
-    List<String> threeDeck;
-    List<String> fourDeck;
+    public ShipTypes ships1;
+    public PlacedShips placedShips1;
+    public PlacedShips placedShips2;
+    public boolean placed1;
+    public boolean placed2;
+    public ShipTypes ships2;
+    public int hit1;
+    public int hit2;
+    public int miss1;
+    public int miss2;
 }

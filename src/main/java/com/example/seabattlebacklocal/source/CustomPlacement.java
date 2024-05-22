@@ -43,7 +43,7 @@ public class CustomPlacement  {
     
     public void setCoordinate(int x, int y){
         try{
-            coordinatesForShip.add(new Coordinate(x,y,gameEngine.getGame().getSizeOfBoard()));
+            coordinatesForShip.add(new Coordinate(x,y,gameEngine.getGame().sizeOfBoard));
         }
         catch(Exception e){
             System.out.println(e.getMessage());

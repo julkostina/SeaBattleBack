@@ -1,6 +1,6 @@
 {
-  "player1": "mother",
-  "player2": "",
+  "player1": "player1",
+  "player2": "player2",
   "turn": 1,
   "volume": -2.0,
   "sizeOfBoard": 8,
