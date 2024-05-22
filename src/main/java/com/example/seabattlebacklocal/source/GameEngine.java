@@ -37,13 +37,16 @@ public class GameEngine {
     }
 
     public void initGame(String name1, String name2, int size, float volume) {
-//        data.volume=volume;
         gameBoards.put("ofPlayer1", new GameBoard(size));
         gameBoards.put("ofPlayer2Opponent", new GameBoard(size));
         gameBoards.put("ofPlayer1Opponent", new GameBoard(size));
         gameBoards.put("ofPlayer2", new GameBoard(size));
         players.put("player1", new PlayerBuilder(new Player("", gameBoards.get("ofPlayer1"))).setName(name1).build());
         players.put("player2", new PlayerBuilder(new Player("", gameBoards.get("ofPlayer2"))).setName(name2).build());
+        data.player1=name1;
+        data.player2=name2;
+        data.sizeOfBoard=size;
+        serialization.writeFile(data);
     }
 
     public void updateGame(int x, int y, int sizeOfShip) {

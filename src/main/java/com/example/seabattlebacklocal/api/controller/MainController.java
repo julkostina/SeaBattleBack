@@ -18,7 +18,6 @@ public class MainController {
     Serialization serialization = Serialization.getInstance();
     GameEngine game = new GameEngine();
 
-
     @GetMapping("/")
     public String index() {
         return "Greetings from Spring Boot!";
@@ -29,10 +28,7 @@ public class MainController {
     public ResponseEntity<Object> initGame(@RequestBody Map<String, Object> datamap) {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-
-        GameEngine gameEngine = new GameEngine();
-        gameEngine.initGame(datamap.get("firstPlayerName").toString(), (String) datamap.get("secondPlayerName"), Integer.parseInt(datamap.get("size").toString()), 0);
-
+        game.initGame(datamap.get("player1").toString(), (String) datamap.get("player2"), Integer.parseInt(datamap.get("size").toString()), 0);
         return new ResponseEntity<Object>(HttpStatus.OK);
     }
 
