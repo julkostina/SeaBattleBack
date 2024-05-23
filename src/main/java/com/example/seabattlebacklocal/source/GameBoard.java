@@ -166,74 +166,16 @@ public class GameBoard   {
         }
     }
 
-    public void setDistanceForShip(int row, int col ){
-        if(row==0){
-            if(col==0){
-                setDistance(row+1, col);
-                setDistance(row+1, col+1);
-                setDistance(row, col+1);
-            }
-            if(col==size-1){
-                setDistance(row+1, col);
-                setDistance(row+1, col-1);
-                setDistance(row, col-1);
-            }
-            if(col!=size-1&&col!=0){
-                setDistance(row+1, col);
-                setDistance(row+1, col-1);
-                setDistance(row, col-1);
-                setDistance(row+1, col+1);
-                setDistance(row, col+1);
-            }
-        }
-        if(row==size-1){
-            if(col==0){
-                setDistance(row-1, col);
-                setDistance(row-1, col+1);
-                setDistance(row, col-1);
-            }
-            if(col==size-1){
-                setDistance(row-1, col);
-                setDistance(row-1, col-1);
-                setDistance(row, col+1);
-            }
-            if(col!=size-1&&col!=0){
-                setDistance(row-1, col);
-                setDistance(row-1, col-1);
-                setDistance(row, col-1);
-                setDistance(row-1, col+1);
-                setDistance(row, col+1);
-            }
-        }
-        if(row!=0&&row!=size-1){
-            if(col==0){
-                setDistance(row-1, col);
-                setDistance(row-1, col+1);
-                setDistance(row+1, col);
-                setDistance(row+1, col+1);
-                setDistance(row, col+1);
-            }
-            if(col==size-1){
-                setDistance(row-1, col);
-                setDistance(row-1, col-1);
-                setDistance(row+1, col);
-                setDistance(row+1, col-1);
-                setDistance(row, col-1);
-            }
-            if(col!=size-1&&col!=0){
-                setDistance(row-1,col);
-                setDistance(row+1, col);
-                setDistance(row-1, col-1);
-                setDistance(row-1, col+1);
-                setDistance(row+1, col+1);
-                setDistance(row+1, col-1);
-                setDistance(row, col-1);
-                setDistance(row, col+1);
-            }
+    public void setDistanceForShip(int row, int col) {
 
+        for (int i = Math.max(0, row - 1); i <= Math.min(size - 1, row + 1); i++) {
+            for (int j = Math.max(0, col - 1); j <= Math.min(size - 1, col + 1); j++) {
+                if (i != row || j != col) {
+                    setDistance(i, j);
+                }
+            }
         }
     }
-
 
     public boolean isGameOver() {
 
@@ -285,16 +227,13 @@ public class GameBoard   {
 
     private Dictionary<String, List<Coordinate>> updateCoordinatesOfShips(String shipType, Ship ship) {
         Dictionary<String, List<Coordinate>> coordinatesOfShips = this.coordinatesOfShips;
-            // Get the coordinates of the ship
             List<Coordinate> shipCoordinates = ship.getCoordinates();
 
-            // Convert the coordinates to a list of arrays of integers
             List<Coordinate> coordinates = new ArrayList<>();
             for (Coordinate coordinate : shipCoordinates) {
                 coordinates.add(new Coordinate( coordinate.getRow(), coordinate.getColumn(),size));
             }
 
-            // Update the dictionary with the new coordinates
             coordinatesOfShips.put(shipType, coordinates);
         return coordinatesOfShips;
     }
