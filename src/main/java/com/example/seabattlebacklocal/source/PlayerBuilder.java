@@ -5,6 +5,9 @@ public class PlayerBuilder {
     private GameBoard gameBoard;
     private int miss ;
     private int hit;
+    public PlayerBuilder(){
+
+    }
     public PlayerBuilder(Player player){
         this.name = player.getName();
         this.gameBoard=player.getGameBoard();

@@ -26,6 +26,9 @@ public class GameEngine {
     public Game getGame(){
         return data;
     }
+    public Dictionary<String, Player> getPlayers(){
+        return players;
+    }
     public void setShipSize(int size){
         this.shipSize = size;
     }
@@ -41,8 +44,9 @@ public class GameEngine {
         gameBoards.put("ofPlayer2Opponent", new GameBoard(size));
         gameBoards.put("ofPlayer1Opponent", new GameBoard(size));
         gameBoards.put("ofPlayer2", new GameBoard(size));
-        players.put("player1", new PlayerBuilder(new Player("", gameBoards.get("ofPlayer1"))).setName(name1).build());
-        players.put("player2", new PlayerBuilder(new Player("", gameBoards.get("ofPlayer2"))).setName(name2).build());
+        players.put("player1", new PlayerBuilder().setName(name1).setGameBoard(gameBoards.get("ofPlayer1")).build());
+        players.put("player2", new PlayerBuilder().setName(name2).setGameBoard(gameBoards.get("ofPlayer2")).build());
+        data.volume = volume;
         data.player1=name1;
         data.player2=name2;
         data.sizeOfBoard=size;
@@ -99,9 +103,6 @@ public class GameEngine {
     }
 
     private void makeAShot(int x, int y, int player, int sizeOfShip) {
-        // SoundPlayer shotSound = new SoundPlayer(data.volume);
-        // shotSound.setSound("src\\main\\java\\com\\example\\seabattlebacklocal\\source\\sounds\\249101-Light_Naval_Cannon_Blast_4.wav");
-        // shotSound.playSound();
         if(player == 1){
             players.get("player1").makeMove(new Coordinate(x, y, data.sizeOfBoard),sizeOfShip);
         } else {

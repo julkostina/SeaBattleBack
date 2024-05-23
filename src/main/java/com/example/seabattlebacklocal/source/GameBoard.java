@@ -86,24 +86,10 @@ public class GameBoard   {
         return board[x][y] == DISTANCE;
     }
 
-//        if ((placement=="start")&&((row > 0 && board[row - 1][col] == SHIP)||(row < size - 1 && board[row + 1][col] == SHIP)||(col > 0 && board[row][col - 1] == 1)||(col < size - 1 && board[row][col + 1] == SHIP)
-//        ||(row>0&&col>0&& board[row-1][col-1]==SHIP)||(row>0&&col<size&& board[row-1][col+1]==SHIP)||(row<size-1&&col>0&& board[row+1][col-1]==SHIP)||(row<size-1&&col>0&& board[row+1][col+1]==SHIP))){
-//            return true;
-//        }
-//        if ((placement!="end")&&((row > 0 && board[row - 1][col] == SHIP)||(row < size - 1 && board[row + 1][col] == SHIP)||(col > 0 && board[row][col - 1] == 1)||(col < size - 1 && board[row][col + 1] == SHIP)
-//                ||(row>0&&col>0&& board[row-1][col-1]==SHIP)||(row>0&&col<size&& board[row-1][col+1]==SHIP)||(row<size-1&&col>0&& board[row+1][col-1]==SHIP)||(row<size-1&&col>0&& board[row+1][col+1]==SHIP))){
-//            return true;
-//        }
-//         if ((placement=="middle")&&((row > 0 && board[row - 1][col] == SHIP)||(row < size - 1 && board[row + 1][col] == SHIP))){
-//            return true;
-//        }
-//        else{
-//            return false;
-//        }
-
-
-    public boolean placeShip(Ship ship, Coordinate start, Coordinate end) {
+    public boolean placeShip(Ship ship) {
         boolean result = false;
+        Coordinate start = ship.getCoordinates().get(0);
+        Coordinate end  = ship.getCoordinates().get(ship.getSize()-1);
         if (isShip(start.getRow(), start.getColumn()) || isShip(end.getRow(), end.getColumn())||isShipNearby(start.getRow(), start.getColumn()) || isShipNearby(end.getRow(), end.getColumn())) {
             return result;
         }
@@ -219,7 +205,7 @@ public class GameBoard   {
                 setDistance(row, col+1);
             }
         }
-        if(row!=0&&row==size-1){
+        if(row!=0&&row!=size-1){
             if(col==0){
                 setDistance(row-1, col);
                 setDistance(row-1, col+1);
@@ -246,11 +232,8 @@ public class GameBoard   {
             }
 
         }
-
     }
-//    public boolean checkHit(Coordinate target) {
-//        return isHit(target.getRow(), target.getColumn());
-//    }
+
 
     public boolean isGameOver() {
 

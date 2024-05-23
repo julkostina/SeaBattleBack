@@ -56,10 +56,10 @@ public class CustomPlacement  {
             ships.add(setShip(gameEngine.getShipSize()));
             this.setDistanceAroundShip(ships.get(i), gameBoard);
             if(repeats!=1){
-                gameBoard.placeShip(ships.get(i),ships.get(i).getCoordinates().get(0), ships.get(i).getCoordinates().get(ships.get(i).getCoordinates().size()-1));
+                gameBoard.placeShip(ships.get(i));
             }
             else{
-                gameBoard.placeShip(ships.get(i),ships.get(i).getCoordinates().get(0), ships.get(i).getCoordinates().get(0));
+                gameBoard.placeShip(ships.get(i));
             }
         }
         return ships;

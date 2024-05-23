@@ -44,13 +44,12 @@ public class RandomPlacement  {
                 
             }
             ship = factory.createShip(coordinates);
-            boolean placed = false;
-            while (!placed) {
+            boolean placed=false;
+            while (placed==false) {
                 int startRow = random.nextInt(gameBoard.getSize());
                 int startColumn = random.nextInt(gameBoard.getSize());
                 int endRow = startRow;
                 int endColumn = startColumn;
-                // If the ship is vertical, adjust the end row
                 if (random.nextBoolean()) {
                     if (startRow + ship.getSize() - 1 < gameBoard.getSize()) {
                         endRow += ship.getSize() - 1;
@@ -58,7 +57,6 @@ public class RandomPlacement  {
                         startRow -= ship.getSize() - 1;
                     }
                 }
-                // If the ship is horizontal, adjust the end column
                 else {
                     if (startColumn + ship.getSize() - 1 < gameBoard.getSize()) {
                         endColumn += ship.getSize() - 1;
@@ -66,14 +64,19 @@ public class RandomPlacement  {
                         startColumn -= ship.getSize() - 1;
                     }
                 }
-                Coordinate start = new Coordinate(startRow, startColumn,sizeOfBoard );
-                Coordinate end = new Coordinate(endRow, endColumn, sizeOfBoard);
-
-                // Try to place the ship. If it doesn't fit, we'll try again with new
-                // coordinates.
-                if (gameBoard.placeShip(ship, start, end)) {
-                    placed = true;
+                placed=true;
+                Coordinate start= new Coordinate();
+                Coordinate end=new Coordinate();
+                try{
+                     start = new Coordinate(startRow, startColumn,sizeOfBoard );
+                     end = new Coordinate(endRow, endColumn, sizeOfBoard);
                 }
+                catch (Exception e){
+                    placed=false;
+                }
+                ship.getCoordinates().set(0,start);
+                ship.getCoordinates().set(ship.getSize()-1,end);
+                gameBoard.placeShip(ship);
             }
             ships.add(ship);
             this.setDistanceAroundShip(ship, gameBoard);

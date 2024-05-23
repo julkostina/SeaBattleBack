@@ -5,7 +5,7 @@ public class Game {
     public String player2;
     public int turn;
     public int sizeOfBoard;
-
+    public float volume;
     public ShipTypes ships1;
     public PlacedShips placedShips1;
     public PlacedShips placedShips2;

@@ -14,7 +14,6 @@ import java.util.*;
 @RestController
 public class MainController {
     private final String ORIGIN = "http://localhost:3000";
-    private final FileService fileService = new FileService();
     Serialization serialization = Serialization.getInstance();
     GameEngine game = new GameEngine();
 
@@ -100,9 +99,19 @@ public class MainController {
 
         if (placement.equals(Player.Placement.CUSTOM)) {
            // TODO
-        } else {
-        }
+            List<List<List<Integer>>> shipCoordinates = (List<List<List<Integer>>>) datamap.get("shipCoordinates");
 
+            for (List<List<Integer>> ship : shipCoordinates) {
+                CustomPlacement customPlacement = new CustomPlacement();
+                for (List<Integer> coordinate : ship) {
+                    customPlacement.setCoordinate(coordinate.get(0), coordinate.get(1));
+                }
+                customPlacement.placeShips(game.getPlayers().get("player" + datamap.get("player")).getGameBoard());
+            }
+           // List<Coordinate> oneDeck = shipCoordinates.get("placement");
+        } else {
+            game.getPlayers().get("player" + datamap.get("player")).placeShips(Player.Placement.RANDOM, Integer.parseInt(datamap.get("player").toString()));
+        }
         return new ResponseEntity<Object>(HttpStatus.OK);
     }
 }

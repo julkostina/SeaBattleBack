@@ -58,7 +58,7 @@ public class Player {
             data.put("placementStrategy"+turn, "RANDOM");
             RandomPlacement placementStrategy  = new RandomPlacement();
             placementStrategy.placeShips(this.getGameBoard());
-            data.put(data.get("placed"+turn), "true");
+            data.put("placed"+turn, "true");
         }
         else{
             data.put("placementStrategy"+turn,  "CUSTOM");
