@@ -22,6 +22,9 @@ public class Player {
     public GameBoard getGameBoard() {
         return gameBoard;
     }
+    public void setGameBoard(GameBoard gameBoard) {
+        this.gameBoard = gameBoard;
+    }
     public String getName() {
         return name;
     }

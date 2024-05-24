@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
+
 import com.example.seabattlebacklocal.source.Coordinate;
 import com.example.seabattlebacklocal.source.Ships.Ship;
 
-public class GameBoard   {
+public class GameBoard {
     private static final int EMPTY = 0;
     private static final int SHIP = 1;
     private static final int HIT = 2;
@@ -16,9 +17,9 @@ public class GameBoard   {
 
     private final int size;
     private final int[][] board;
-    private final Dictionary<String, Integer> numberOfShips =new Hashtable<>();
-    private final Dictionary<String, List<Coordinate>> coordinatesOfShips=new Hashtable<>();
-    private final List<Ship> ships= new ArrayList<>();
+    private Dictionary<String, Integer> numberOfShips = new Hashtable<>();
+    private Dictionary<String, List<Coordinate>> coordinatesOfShips = new Hashtable<>();
+    private List<Ship> ships = new ArrayList<>();
 
     enum Placement {
         VERTICAL_UP, VERTICAL_DOWN, HORIZONTAL_RIGHT, HORIZONTAL_LEFT
@@ -37,28 +38,38 @@ public class GameBoard   {
         numberOfShips.put("fourDeck", 1);
     }
 
+    public GameBoard(int size, Dictionary<String, Integer> numberOfShips, Dictionary<String, List<Coordinate>> coordinatesOfShips, List<Ship> ships, int[][] board) {
+        this.size = size;
+        this.numberOfShips = numberOfShips;
+        this.coordinatesOfShips = coordinatesOfShips;
+        this.ships.addAll(ships);
+        this.board = board;
+    }
+
     public int[][] getBoard() {
         return board;
     }
 
     public void setShip(int x, int y) {
-        board[x][y] = SHIP;
+        board[y][x] = SHIP;
     }
 
     public void setHit(int x, int y) {
-        board[x][y] = HIT;
+        board[y][x] = HIT;
     }
 
     public void setMiss(int x, int y) {
-        board[x][y] = MISS;
+        board[y][x] = MISS;
     }
 
     public void setEmpty(int x, int y) {
-        board[x][y] = EMPTY;
+        board[y][x] = EMPTY;
     }
+
     public void setDistance(int x, int y) {
-        board[x][y] = DISTANCE;
+        board[y][x] = DISTANCE;
     }
+
     public int getSize() {
         return size;
     }
@@ -68,29 +79,30 @@ public class GameBoard   {
     }
 
     public boolean isShip(int x, int y) {
-        return board[x][y] == SHIP;
+        return board[y][x] == SHIP;
     }
 
     public boolean isHit(int x, int y) {
-        return board[x][y] == HIT;
+        return board[y][x] == HIT;
     }
 
     public boolean isMiss(int x, int y) {
-        return board[x][y] == MISS;
+        return board[y][x] == MISS;
     }
 
     public boolean isEmpty(int x, int y) {
-        return board[x][y] == EMPTY;
+        return board[y][x] == EMPTY;
     }
+
     public boolean isShipNearby(int x, int y) {
-        return board[x][y] == DISTANCE;
+        return board[y][x] == DISTANCE;
     }
 
     public boolean placeShip(Ship ship) {
         boolean result = false;
         Coordinate start = ship.getCoordinates().get(0);
-        Coordinate end  = ship.getCoordinates().get(ship.getSize()-1);
-        if (isShip(start.getRow(), start.getColumn()) || isShip(end.getRow(), end.getColumn())||isShipNearby(start.getRow(), start.getColumn()) || isShipNearby(end.getRow(), end.getColumn())) {
+        Coordinate end = ship.getCoordinates().get(1);
+        if (isShip(start.getRow(), start.getColumn()) || isShip(end.getRow(), end.getColumn()) || isShipNearby(start.getRow(), start.getColumn()) || isShipNearby(end.getRow(), end.getColumn())) {
             return result;
         }
         Placement placement = Placement.HORIZONTAL_LEFT;
@@ -189,52 +201,52 @@ public class GameBoard   {
         return true;
     }
 
-    private Dictionary<String,Integer> updateNumberOfShips(String shipType, char typeOfOperation) {
-        Dictionary<String,Integer> listOfShips = this.numberOfShips;
+    private Dictionary<String, Integer> updateNumberOfShips(String shipType, char typeOfOperation) {
+        Dictionary<String, Integer> listOfShips = this.numberOfShips;
         if (typeOfOperation == '+') {
-                switch(shipType){
-                    case "oneDeck":
+            switch (shipType) {
+                case "oneDeck":
                     listOfShips.put("oneDeck", numberOfShips.get("oneDeck") + 1);
-                        break;
-                    case "twoDeck":
+                    break;
+                case "twoDeck":
                     listOfShips.put("twoDeck", numberOfShips.get("twoDeck") + 1);
-                        break;
-                    case "threeDeck":
+                    break;
+                case "threeDeck":
                     listOfShips.put("threeDeck", numberOfShips.get("threeDeck") + 1);
-                        break;
-                    case "fourDeck":
+                    break;
+                case "fourDeck":
                     listOfShips.put("fourDeck", numberOfShips.get("fourDeck") + 1);
-                        break;
-                }
-            } else {
-                switch(shipType){
-                    case "oneDeck":
-                    listOfShips.put("oneDeck", numberOfShips.get("oneDeck") - 1);
-                        break;
-                    case "twoDeck":
-                    listOfShips.put("twoDeck", numberOfShips.get("twoDeck") - 1);
-                        break;
-                    case "threeDeck":
-                    listOfShips.put("threeDeck", numberOfShips.get("threeDeck") - 1);
-                        break;
-                    case "fourDeck":
-                    listOfShips.put("fourDeck", numberOfShips.get("fourDeck") - 1);
-                        break;
-                }
+                    break;
             }
-    return listOfShips;
+        } else {
+            switch (shipType) {
+                case "oneDeck":
+                    listOfShips.put("oneDeck", numberOfShips.get("oneDeck") - 1);
+                    break;
+                case "twoDeck":
+                    listOfShips.put("twoDeck", numberOfShips.get("twoDeck") - 1);
+                    break;
+                case "threeDeck":
+                    listOfShips.put("threeDeck", numberOfShips.get("threeDeck") - 1);
+                    break;
+                case "fourDeck":
+                    listOfShips.put("fourDeck", numberOfShips.get("fourDeck") - 1);
+                    break;
+            }
+        }
+        return listOfShips;
     }
 
     private Dictionary<String, List<Coordinate>> updateCoordinatesOfShips(String shipType, Ship ship) {
         Dictionary<String, List<Coordinate>> coordinatesOfShips = this.coordinatesOfShips;
-            List<Coordinate> shipCoordinates = ship.getCoordinates();
+        List<Coordinate> shipCoordinates = ship.getCoordinates();
 
-            List<Coordinate> coordinates = new ArrayList<>();
-            for (Coordinate coordinate : shipCoordinates) {
-                coordinates.add(new Coordinate( coordinate.getRow(), coordinate.getColumn(),size));
-            }
+        List<Coordinate> coordinates = new ArrayList<>();
+        for (Coordinate coordinate : shipCoordinates) {
+            coordinates.add(new Coordinate(coordinate.getRow(), coordinate.getColumn(), size));
+        }
 
-            coordinatesOfShips.put(shipType, coordinates);
+        coordinatesOfShips.put(shipType, coordinates);
         return coordinatesOfShips;
     }
 }

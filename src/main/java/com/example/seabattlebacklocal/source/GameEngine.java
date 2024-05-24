@@ -9,7 +9,7 @@ import com.example.seabattlebacklocal.source.Player.Placement;
 
 
 public class GameEngine {
-    private final Dictionary<String, Player> players= new Hashtable<>();
+    private final Dictionary<String, Player> players = new Hashtable<>();
     private final Serialization serialization = Serialization.getInstance();
     private Game data;
     private int shipSize;
@@ -17,25 +17,31 @@ public class GameEngine {
 
     public GameEngine() {
         data = serialization.readFile();
+        players.put("player1", new PlayerBuilder().setName(data.player1).setGameBoard(gameBoards.get("ofPlayer1")).build());
+        players.put("player2", new PlayerBuilder().setName(data.player2).setGameBoard(gameBoards.get("ofPlayer2")).build());
     }
 
     public GameEngine(Game data) {
         this.data = data;
     }
 
-    public Game getGame(){
+    public Game getGame() {
         return data;
     }
-    public Dictionary<String, Player> getPlayers(){
+
+    public Dictionary<String, Player> getPlayers() {
         return players;
     }
-    public void setShipSize(int size){
+
+    public void setShipSize(int size) {
         this.shipSize = size;
     }
-    public int getShipSize(){
+
+    public int getShipSize() {
         return shipSize;
     }
-    public Coordinate setCoordinate(int row, int col){
+
+    public Coordinate setCoordinate(int row, int col) {
         return new Coordinate(row, col, data.sizeOfBoard);
     }
 
@@ -47,25 +53,25 @@ public class GameEngine {
         players.put("player1", new PlayerBuilder().setName(name1).setGameBoard(gameBoards.get("ofPlayer1")).build());
         players.put("player2", new PlayerBuilder().setName(name2).setGameBoard(gameBoards.get("ofPlayer2")).build());
         data.volume = volume;
-        data.player1=name1;
-        data.player2=name2;
-        data.sizeOfBoard=size;
+        data.player1 = name1;
+        data.player2 = name2;
+        data.sizeOfBoard = size;
         serialization.writeFile(data);
     }
 
     public void updateGame(int x, int y, int sizeOfShip) {
-        if(data.turn==1){
+        if (data.turn == 1) {
             makeAShot(x, y, 1, sizeOfShip);
         } else {
-            makeAShot(x, y, 2,sizeOfShip);
+            makeAShot(x, y, 2, sizeOfShip);
         }
     }
 
     public void chooseStrategy(Placement strategy, int playerNum) {
         if (strategy.equals(Placement.RANDOM)) {
-            players.get("player"+playerNum).placeShips(Placement.RANDOM, playerNum);
+            players.get("player" + playerNum).placeShips(Placement.RANDOM, playerNum);
         } else {
-            players.get("player"+playerNum).placeShips(Placement.CUSTOM, playerNum);
+            players.get("player" + playerNum).placeShips(Placement.CUSTOM, playerNum);
         }
     }
 
@@ -91,6 +97,16 @@ public class GameEngine {
     }
 
     public int endGame() {
+        if (players.get("player1").getGameBoard() == null
+                && players.get("player2").getGameBoard() == null) {
+            return -3;
+        }
+        if (players.get("player2").getGameBoard() == null) {
+            return -2;
+        }
+        if (players.get("player1").getGameBoard() == null) {
+            return -1;
+        }
         if (!players.get("player1").getGameBoard().isGameOver()
                 && !players.get("player2").getGameBoard().isGameOver()) {
             return 0;
@@ -103,13 +119,14 @@ public class GameEngine {
     }
 
     private void makeAShot(int x, int y, int player, int sizeOfShip) {
-        if(player == 1){
-            players.get("player1").makeMove(new Coordinate(x, y, data.sizeOfBoard),sizeOfShip);
+        if (player == 1) {
+            players.get("player2").makeMove(new Coordinate(x, y, data.sizeOfBoard), sizeOfShip);
+            data.turn = 2;
         } else {
-            players.get("player2").makeMove(new Coordinate(x, y, data.sizeOfBoard),sizeOfShip);
+            players.get("player1").makeMove(new Coordinate(x, y, data.sizeOfBoard), sizeOfShip);
+            data.turn = 1;
         }
     }
-
 
 
 }

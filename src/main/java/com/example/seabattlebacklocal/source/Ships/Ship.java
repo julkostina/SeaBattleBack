@@ -11,6 +11,12 @@ public abstract class Ship {
 
     public Ship(){
     }
+    public Ship(Integer size, Integer hitPoints, Boolean isSunk, List<Coordinate> coordinates){
+        this.size = size;
+        this.hitPoints = hitPoints;
+        this.isSunk = isSunk;
+        this.coordinates = coordinates;
+    }
     public Ship(List<Coordinate> coordinates){
         this.coordinates = coordinates;
     }
